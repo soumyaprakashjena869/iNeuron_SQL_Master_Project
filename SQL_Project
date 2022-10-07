@@ -1,4 +1,16 @@
+                                  🎯Analyzing Road Safety in the UK
+                                  
+                                  
+Business problem:
+
+The UK Department of Transport provides open datasets on road safety and casualties, and one can
+use these datasets to analyze how safe the roads in the UK are. This project will help you answer a
+few questions using their 2015 dataset.
+
+The dataset has 3 tables i.e Accident, vehicle, Vehicle_type
+
 CREATE DATABASE iNeuron_Master_SQL_Project;
+
 USE iNeuron_Master_SQL_Project;
 
 CREATE TABLE Acidents_2015(
@@ -92,4 +104,49 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
+Approach/Project Idea
+Use aggregate functions in SQL and Python to answer the following sample questions:
+1. Evaluate the median severity value of accidents caused by various Motorcycles.
+2. Evaluate Accident Severity and Total Accidents per Vehicle Type
+3. Calculate the Average Severity by vehicle type.
+4. Calculate the Average Severity and Total Accidents by Motorcycle.
 
+                           ANSWER
+
+1. The median severity value of accidents caused by various Motorcycles.
+
+SELECT vt.LABEL AS 'Vehicle Type', AVG(a.accident_severity) AS 'Median Severity'
+FROM Acidents_2015_1 a
+JOIN Vehicles_2015 v ON a.accident_index = v.accident_index
+JOIN vehicle_types vt ON v.vehicle_type = vt.`CODE`
+WHERE vt.LABEL LIKE '%otorcycle%'
+GROUP BY 1
+ORDER BY 2;
+
+2. Get Accident Severity and Total Accidents per Vehicle Type
+SELECT vt.LABEL AS 'Vehicle Type', a.accident_severity AS 'Severity', COUNT(vt.LABEL) AS 'Number of Accidents'
+FROM Acidents_2015_1 a
+JOIN Vehicles_2015 v ON a.accident_index = v.accident_index
+JOIN vehicle_types vt ON v.vehicle_type = vt.`code`
+GROUP BY 1
+ORDER BY 2,3;
+
+3. Average Severity by vehicle type 
+
+SELECT vt.LABEL AS 'Vehicle Type', AVG(a.accident_severity) AS 'Average Severity', COUNT(vt.LABEL) AS 'Number of Accidents'
+FROM Acidents_2015_1 a
+JOIN Vehicles_2015 v ON a.accident_index = v.accident_index
+JOIN vehicle_types vt ON v.Vehicle_Type = vt.`code`
+GROUP BY 1
+ORDER BY 2,3;
+
+
+4. he Average Severity and Total Accidents by Motorcycle.
+
+SELECT vt.LABEL AS 'Vehicle Type', AVG(a.accident_severity) AS 'Average Severity', COUNT(vt.LABEL) AS 'Number of Accidents'
+FROM Acidents_2015_1 a
+JOIN Vehicles_2015 v ON a.accident_index = v.accident_index
+JOIN vehicle_types vt ON v.vehicle_type = vt.`CODE`
+WHERE vt.LABEL LIKE '%otorcycle%'
+GROUP BY 1
+ORDER BY 2,3;
